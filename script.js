@@ -74,15 +74,28 @@ function refreshDisplay() {
 
 function displayInfo(station, lineData) {
   let html = `<h3>${station.name}</h3>`;
-  html += `<p>${station.description || "No details available."}</p>`;
 
-  if (showTerminating.checked) {
+  // ✅ Add operational information (from DOCX)
+  html += `<table class="info-table">
+    <tr><td><strong>Signaller:</strong></td><td>${station.signaller || "—"}</td></tr>
+    <tr><td><strong>Recorded:</strong></td><td>${station.recorded || "—"}</td></tr>
+    <tr><td><strong>Caution Orders:</strong></td><td>${station.caution_orders || "—"}</td></tr>
+    <tr><td><strong>Driver Points:</strong></td><td>${station.driver_points || "—"}</td></tr>
+  </table>`;
+
+  if (station.description) {
+    html += `<p class="desc">${station.description}</p>`;
+  }
+
+  // ✅ Show Terminating Locations
+  if (showTerminating.checked && lineData.terminating?.length) {
     html += `<h4>Terminating Locations</h4><ul>`;
     lineData.terminating.forEach(t => html += `<li>${t}</li>`);
     html += `</ul>`;
   }
 
-  if (showStabling.checked) {
+  // ✅ Show Stabling Locations
+  if (showStabling.checked && lineData.stabling?.length) {
     html += `<h4>Stabling Locations</h4><ul>`;
     lineData.stabling.forEach(s => html += `<li>${s}</li>`);
     html += `</ul>`;
@@ -94,3 +107,4 @@ function displayInfo(station, lineData) {
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
