@@ -1,1 +1,211 @@
+{
+  "line": "Frankston",
+  "terminating": [
+    "Caulfield",
+    "Glen Huntly",
+    "Moorabbin",
+    "Cheltenham (down only)",
+    "Mordialloc",
+    "Bonbeach (up only)",
+    "Carrum (down only)",
+    "Kananook",
+    "Frankston"
+  ],
+  "stabling": [
+    "Caulfield",
+    "Mordialloc",
+    "Kananook",
+    "Frankston"
+  ],
+  "stations": [
+    {
+      "name": "Flinders Street",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Central city terminus for the Frankston line."
+    },
+    {
+      "name": "Richmond",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Major interchange for city loop and eastern lines."
+    },
+    {
+      "name": "South Yarra",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Busy inner-suburban station connecting to Sandringham line."
+    },
+    {
+      "name": "Hawksburn",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Toorak",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Armadale",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Malvern",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Caulfield",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Interchange with Cranbourne and Pakenham lines; terminating and stabling facilities."
+    },
+    {
+      "name": "Glen Huntly",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Ormond",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "McKinnon",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Bentleigh",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Patterson",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Moorabbin",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Moorabbin Local",
+      "signaller": "Moorabbin (Local Panel)",
+      "recorded": "No",
+      "caution_orders": "Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Highett",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Cheltenham",
+      "signaller": "Kananook – Moorabbin Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Mentone",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Mordialloc",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Terminus for some services; stabling facilities available."
+    },
+    {
+      "name": "Parkdale",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Aspendale",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Edithvale",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Bonbeach",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Carrum",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Kananook",
+      "signaller": "Kananook Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Frankston",
+      "signaller": "Frankston Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Terminus of the Frankston line; major stabling and maintenance facilities."
+    }
+  ]
+}
 
