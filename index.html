@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Route Knowledge</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>Route Knowledge</h1>
+  </header>
+
+  <main>
+    <section class="selectors">
+      <label for="lineSelect">Choose a line:</label>
+      <select id="lineSelect">
+        <option value="">-- Select Line --</option>
+      </select>
+
+      <label for="stationSelect">Choose a station:</label>
+      <select id="stationSelect" disabled>
+        <option value="">-- Select Station --</option>
+      </select>
+    </section>
+
+    <section class="toggles">
+      <div class="toggle">
+        <label>Show terminating locations:</label>
+        <input type="checkbox" id="showTerminating">
+      </div>
+      <div class="toggle">
+        <label>Show stabling locations:</label>
+        <input type="checkbox" id="showStabling">
+      </div>
+    </section>
+
+    <section id="output"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

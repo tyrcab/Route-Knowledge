@@ -1,0 +1,40 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background-color: #f7f9fc;
+  color: #222;
+}
+
+.app-header {
+  background: #1e90ff;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+main {
+  padding: 1em;
+  max-width: 600px;
+  margin: auto;
+}
+
+label {
+  display: block;
+  margin-top: 1em;
+}
+
+select, input[type="checkbox"] {
+  margin-top: 0.5em;
+}
+
+.toggle {
+  margin-top: 1em;
+}
+
+#output {
+  margin-top: 2em;
+  padding: 1em;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
