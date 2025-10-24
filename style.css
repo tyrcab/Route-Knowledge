@@ -30,7 +30,29 @@ select, input[type="checkbox"] {
 .toggle {
   margin-top: 1em;
 }
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
+.info-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-table tr td:first-child {
+  font-weight: bold;
+  color: #555;
+  width: 40%;
+}
+
+.desc {
+  margin-top: 8px;
+  font-style: italic;
+  color: #444;
+}
 #output {
   margin-top: 2em;
   padding: 1em;
