@@ -4,23 +4,27 @@ const showTerminating = document.getElementById("showTerminating");
 const showStabling = document.getElementById("showStabling");
 const output = document.getElementById("output");
 
-// Define available lines
-const lines = [
-  "Cranbourne",
-  "Frankston",
-  "Sandringham"
-  // ... add up to 10 lines here
-];
+// Automatically load lines from /data/manifest.json
+async function loadLines() {
+  try {
+    const manifest = await fetch("data/manifest.json").then(res => res.json());
+    lineSelect.innerHTML = "<option value=''>-- Select Line --</option>";
+    manifest.files.forEach(file => {
+      const lineName = file.replace(".json", "");
+      const opt = document.createElement("option");
+      opt.value = lineName;
+      opt.textContent = capitalize(lineName);
+      lineSelect.appendChild(opt);
+    });
+  } catch (err) {
+    console.error("Error loading line list:", err);
+    lineSelect.innerHTML = "<option>Error loading lines</option>";
+  }
+}
 
-// Populate line dropdown
-lines.forEach(line => {
-  const opt = document.createElement("option");
-  opt.value = line.toLowerCase();
-  opt.textContent = line;
-  lineSelect.appendChild(opt);
-});
+loadLines();
 
-// Handle line selection
+// When line is selected
 lineSelect.addEventListener("change", async (e) => {
   const selectedLine = e.target.value;
   if (!selectedLine) {
@@ -30,41 +34,42 @@ lineSelect.addEventListener("change", async (e) => {
     return;
   }
 
-  const data = await fetch(`data/${selectedLine}.json`).then(res => res.json());
-  
-  stationSelect.disabled = false;
-  stationSelect.innerHTML = "<option>-- Select Station --</option>";
-  
-  data.stations.forEach(st => {
-    const opt = document.createElement("option");
-    opt.value = st.name;
-    opt.textContent = st.name;
-    stationSelect.appendChild(opt);
-  });
+  try {
+    const data = await fetch(`data/${selectedLine}.json`).then(res => res.json());
+    stationSelect.disabled = false;
+    stationSelect.innerHTML = "<option>-- Select Station --</option>";
 
-  // Save for later use
-  stationSelect.dataset.lineData = JSON.stringify(data);
+    data.stations.forEach(st => {
+      const opt = document.createElement("option");
+      opt.value = st.name;
+      opt.textContent = st.name;
+      stationSelect.appendChild(opt);
+    });
+
+    stationSelect.dataset.lineData = JSON.stringify(data);
+    output.innerHTML = `<p>Select a station from the ${capitalize(selectedLine)} line.</p>`;
+  } catch (err) {
+    output.innerHTML = `<p style="color:red;">Failed to load data for ${capitalize(selectedLine)} line.</p>`;
+    console.error(err);
+  }
 });
 
-// Handle station selection
 stationSelect.addEventListener("change", (e) => {
-  const lineData = JSON.parse(stationSelect.dataset.lineData);
-  const selectedStation = e.target.value;
-  const stationInfo = lineData.stations.find(st => st.name === selectedStation);
-  
-  displayInfo(stationInfo, lineData);
+  const data = JSON.parse(stationSelect.dataset.lineData);
+  const stationName = e.target.value;
+  const station = data.stations.find(st => st.name === stationName);
+  displayInfo(station, data);
 });
 
-// Handle toggles
-showTerminating.addEventListener("change", () => refreshDisplay());
-showStabling.addEventListener("change", () => refreshDisplay());
+showTerminating.addEventListener("change", refreshDisplay);
+showStabling.addEventListener("change", refreshDisplay);
 
 function refreshDisplay() {
   const selectedStation = stationSelect.value;
   if (!selectedStation) return;
-  const lineData = JSON.parse(stationSelect.dataset.lineData);
-  const stationInfo = lineData.stations.find(st => st.name === selectedStation);
-  displayInfo(stationInfo, lineData);
+  const data = JSON.parse(stationSelect.dataset.lineData);
+  const station = data.stations.find(st => st.name === selectedStation);
+  displayInfo(station, data);
 }
 
 function displayInfo(station, lineData) {
@@ -72,16 +77,20 @@ function displayInfo(station, lineData) {
   html += `<p>${station.description || "No details available."}</p>`;
 
   if (showTerminating.checked) {
-    html += `<h4>Terminating Locations:</h4><ul>`;
+    html += `<h4>Terminating Locations</h4><ul>`;
     lineData.terminating.forEach(t => html += `<li>${t}</li>`);
     html += `</ul>`;
   }
 
   if (showStabling.checked) {
-    html += `<h4>Stabling Locations:</h4><ul>`;
+    html += `<h4>Stabling Locations</h4><ul>`;
     lineData.stabling.forEach(s => html += `<li>${s}</li>`);
     html += `</ul>`;
   }
 
   output.innerHTML = html;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
