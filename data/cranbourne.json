@@ -1,0 +1,189 @@
+{
+  "line": "Cranbourne",
+  "terminating": [
+    "South Yarra",
+    "Hawksburn",
+    "Caulfield",
+    "Oakleigh",
+    "Westall",
+    "Springvale",
+    "Dandenong",
+    "Cranbourne"
+  ],
+  "stabling": [
+    "Westall",
+    "Dandenong",
+    "Cranbourne"
+  ],
+  "stations": [
+    {
+      "name": "Flinders Street",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Central city terminus for the Cranbourne line."
+    },
+    {
+      "name": "Richmond",
+      "signaller": "Caulfield Signal Control Panel - Metrol",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Major interchange for city loop and eastern lines."
+    },
+    {
+      "name": "South Yarra",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes",
+      "description": "Busy inner-suburban interchange connecting to Sandringham line."
+    },
+    {
+      "name": "Hawksburn",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Toorak",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Armadale",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Malvern",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Caulfield",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes",
+      "description": "Interchange with Frankston and Pakenham lines; terminating location."
+    },
+    {
+      "name": "Carnegie",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Murrumbeena",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Hughesdale",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Oakleigh",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes",
+      "description": "Suburban station and minor terminating point."
+    },
+    {
+      "name": "Huntingdale",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Clayton",
+      "signaller": "Sunshine SCC",
+      "recorded": "Yes",
+      "caution_orders": "APA",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Westall",
+      "signaller": "Dandenong SCC – Westall Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Stabling and terminating facilities; depot access."
+    },
+    {
+      "name": "Springvale",
+      "signaller": "Dandenong SCC – Westall Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Sandown Park",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Noble Park",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Yarraman",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Dandenong",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
+      "description": "Major interchange with stabling and terminating facilities."
+    },
+    {
+      "name": "Lynbrook",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Merinda Park",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "Cranbourne",
+      "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "Mainline - No / Yard - Yes (EHPM)",
+      "description": "Terminus of the Cranbourne line; includes yard and stabling facilities."
+    }
+  ]
+}
