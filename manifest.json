@@ -1,7 +1,7 @@
 {
   "name": "Route Knowledge",
   "short_name": "Route Knowledge",
-  "version": "v1.0.1",
+  "version": "v1.0.2",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f9fafb",
@@ -18,5 +18,5 @@
       "type": "image/png"
     }
   ],
-  "updated": "2025-10-26T04:26:49.823Z"
+  "updated": "2025-10-26T05:30:16.542Z"
 }
