@@ -2,19 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Route Knowledge</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Prevent aggressive caching -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <!-- PWA / Theme -->
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1E90FF">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Styles & Scripts -->
+  <link rel="stylesheet" href="style.css?v=20251026">
+  <script src="script.js?v=20251026" defer></script>
+
+  <style>
+    /* --- Toast Message Styling --- */
+    #updateToast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1E90FF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 16px;
+      font-weight: 500;
+      z-index: 9999;
+      display: none;
+      animation: fadein 0.3s ease;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  
-<header class="app-header">
-  <img src="icons/icon-192.png" alt="Route Knowledge Logo" class="logo">
-  <h1>Route Knowledge</h1>
-</header>
 
-  <main>
+  <!-- HEADER -->
+  <header class="app-header">
+    <img src="icons/icon-192.png" alt="Logo" class="logo">
+    <h1>Route Knowledge</h1>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
     <section class="selectors">
       <label for="lineSelect">Choose a line:</label>
       <select id="lineSelect">
@@ -39,13 +79,85 @@
     </section>
 
     <section id="output"></section>
+
+    <!-- TERMS OF SERVICE -->
+    <div class="tos-container">
+      <a href="#" id="tosLink">Terms of Service</a>
+    </div>
   </main>
 
-  <script src="script.js"></script>
-  <footer class="app-footer">
-  © Route Knowledge | Tyron Cabral<br>
-  <a href="https://tyrcab.github.io/serviceability-criteria/">Serviceability Criteria Guidelines</a>
+  <!-- TERMS MODAL -->
+  <div id="tosModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-logo-container">
+        <img src="icons/icon-192.png" alt="Logo" class="modal-logo">
+      </div>
+      <h2>Terms of Service</h2>
+      <ul>
+        <li>This is not an official metro document.</li>
+        <li>This application derives information from official training and line documents.</li>
+        <li>Errors may be present, as it is not always possible to verify all data.</li>
+        <li>If unsure, confirm details with official Metro or Operations Control resources.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+ <footer class="app-footer">
+  <div>
+    <span id="appVersion">Version: Loading...</span>
+  </div>
+  <div>
+    If there are any incorrect route knowledge information please send an email to 
+    <a href="mailto:tyroncabral@gmail.com">tyroncabral@gmail.com</a>
+  </div>
 </footer>
 
+  <!-- Toast for updates -->
+  <div id="updateToast">🔄 A new version is available — updating...</div>
+
+  <!-- 🔧 SERVICE WORKER + AUTO-UPDATE LOGIC -->
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+      try {
+        const reg = await navigator.serviceWorker.register("./service-worker.js");
+        console.log("✅ Service Worker registered");
+
+        const showToast = (msg) => {
+          const toast = document.getElementById("updateToast");
+          toast.textContent = msg;
+          toast.style.display = "block";
+        };
+
+        // --- Instant version check on load ---
+        if (reg.active) reg.active.postMessage("checkForUpdate");
+
+        // --- Periodic checks (every 5 minutes) ---
+        setInterval(() => {
+          if (reg.active) reg.active.postMessage("checkForUpdate");
+        }, 300000);
+
+        // --- Handle new version message from SW ---
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          if (event.data.type === "NEW_VERSION") {
+            console.log("🔄 New version detected — reloading...");
+            showToast("🔄 A new version is available — updating...");
+            setTimeout(() => {
+              caches.keys()
+                .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+                .finally(() => location.reload(true));
+            }, 1500);
+          }
+        });
+      } catch (err) {
+        console.error("Service Worker registration failed:", err);
+      }
+    });
+  }
+  </script>
+  <!-- 🔔 Toast message for version updates -->
+<div id="updateToast">🔄 A new version is available — updating...</div>
 </body>
 </html>

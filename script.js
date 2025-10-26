@@ -137,7 +137,7 @@ function displayInfo(station, lineData) {
     }
   }
 
-  // ✅ Always show terminating/stabling lists when toggled, even if no station selected
+  // ✅ Always show terminating/stabling lists when toggled
   if (showTerm) {
     html += `<h4>Terminating Locations</h4><ul>`;
     lineData.terminating.forEach(t => html += `<li>${t}</li>`);
@@ -163,4 +163,105 @@ function displayInfo(station, lineData) {
 // 🔹 Helper function
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// 🔹 Terms of Service Modal Logic
+const tosLink = document.getElementById("tosLink");
+const tosModal = document.getElementById("tosModal");
+const closeBtn = tosModal.querySelector(".close");
+const closeFooterBtn = tosModal.querySelector(".close-btn");
+
+// Open modal when link is clicked
+tosLink.addEventListener("click", (e) => {
+  e.preventDefault();
+  tosModal.classList.add("show");
+});
+
+// Close modal buttons
+closeBtn.addEventListener("click", () => tosModal.classList.remove("show"));
+closeFooterBtn.addEventListener("click", () => tosModal.classList.remove("show"));
+
+// Close modal when clicking outside
+window.addEventListener("click", (e) => {
+  if (e.target === tosModal) tosModal.classList.remove("show");
+});
+
+// 🔹 Auto-set version and date from manifest.json
+async function updateVersionInfo() {
+  const versionElement = document.getElementById("appVersion");
+  if (!versionElement) return;
+
+  try {
+    const manifest = await fetch("./manifest.json", { cache: "no-cache" })
+      .then(res => {
+        if (!res.ok) throw new Error("Manifest fetch failed");
+        return res.json();
+      });
+
+    const version = manifest.version || "v1.0.0";
+    const today = new Date();
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    const formattedDate = today.toLocaleDateString("en-AU", options);
+    versionElement.textContent = `Version: ${version} (Updated ${formattedDate})`;
+  } catch (err) {
+    console.error("Failed to load version info:", err);
+    versionElement.textContent = "Version: v1.0.0 (Offline)";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateVersionInfo);
+
+// 🔹 Register Service Worker & handle updates (same as Serviceability app)
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("./sw.js");
+      console.log("✅ Service Worker registered");
+
+      const showToast = (msg) => {
+        const toast = document.getElementById("updateToast");
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.style.display = "block";
+      };
+
+      // --- Check if waiting worker is ready ---
+      if (reg.waiting) {
+        showToast("🔄 A new version is available — updating...");
+        reg.waiting.postMessage({ type: "SKIP_WAITING" });
+      }
+
+      // --- Detect new SW installation ---
+      reg.addEventListener("updatefound", () => {
+        const newWorker = reg.installing;
+        newWorker.addEventListener("statechange", () => {
+          if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+            showToast("🔄 A new version is available — updating...");
+            setTimeout(() => {
+              newWorker.postMessage({ type: "SKIP_WAITING" });
+            }, 1500);
+          }
+        });
+      });
+
+      // --- Handle SW messages ---
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data.type === "NEW_VERSION") {
+          console.log("🆕 New version detected, reloading...");
+          setTimeout(() => {
+            caches.keys()
+              .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+              .finally(() => location.reload(true));
+          }, 1500);
+        }
+      });
+
+      // --- Periodic version checks every 5 minutes ---
+      setInterval(() => {
+        if (reg.active) reg.active.postMessage("checkForUpdate");
+      }, 300000);
+    } catch (err) {
+      console.error("Service Worker registration failed:", err);
+    }
+  });
 }

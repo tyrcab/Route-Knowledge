@@ -1,9 +1,10 @@
 {
   "name": "Route Knowledge",
-  "short_name": "RouteKnowledge",
-  "start_url": ".",
+  "short_name": "Route Knowledge",
+  "version": "v1.0.0",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#f9fafb",
   "theme_color": "#1E90FF",
   "icons": [
     {

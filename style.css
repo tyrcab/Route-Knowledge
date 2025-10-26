@@ -132,6 +132,118 @@ select:focus {
   color: #444;
 }
 
+/* ✅ STATUS ICONS */
+.tick {
+  color: #2ecc71; /* green */
+  font-size: 1.1em;
+}
+.cross {
+  color: #e74c3c; /* red */
+  font-size: 1.1em;
+}
+
+/* ✅ TERMS LINK (matches Serviceability PWA) */
+.tos-container {
+  text-align: center;
+  margin: 30px 0;
+}
+.tos-container a {
+  color: #1E90FF;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+.tos-container a:hover {
+  color: #104E8B;
+}
+
+/* ✅ MODAL (Serviceability style) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal.show {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: slideDown 0.3s ease-out;
+  position: relative;
+}
+.modal-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.modal-logo {
+  width: 60px;
+  height: 60px;
+}
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.modal-content ul {
+  padding-left: 20px;
+  margin-top: 10px;
+  line-height: 1.5em;
+}
+.modal-content ul li {
+  margin-bottom: 8px;
+}
+.modal-content .close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5em;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-content .close:hover {
+  color: #000;
+}
+.modal-footer {
+  text-align: center;
+  margin-top: 15px;
+}
+.modal-footer .close-btn {
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 1em;
+}
+.modal-footer .close-btn:hover {
+  background-color: #0f70d3;
+}
+@keyframes slideDown {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
 /* FOOTER */
 .app-footer {
   position: fixed;
@@ -157,27 +269,13 @@ select:focus {
 .app-footer a:hover {
   color: #e0e0e0;
 }
-
-/* BUTTONS (Optional future additions like Reset) */
-button {
-  background-color: #1E90FF;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 15px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+/* ✅ Show/hide output globally */
+#output {
+  display: none;
 }
-button:hover {
-  background-color: #0f70d3;
-  transform: scale(1.03);
+#output.visible {
+  display: block;
 }
-button:active {
-  background-color: #0d5aa8;
-  transform: scale(0.98);
-}
-
 /* RESPONSIVE */
 @media (max-width: 600px) {
   main {
@@ -197,19 +295,32 @@ button:active {
     font-size: 0.85em;
     padding: 8px 6px;
   }
-  /* Hide result box until needed */
-#output {
+}
+/* 🔔 UPDATE TOAST */
+#updateToast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1E90FF;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 9999;
   display: none;
+  animation: fadein 0.3s ease;
 }
-#output.visible {
-  display: block;
-}
-.tick {
-  color: #2ecc71; /* green */
-  font-size: 1.1em;
-}
-.cross {
-  color: #e74c3c; /* red */
-  font-size: 1.1em;
-}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
