@@ -4,7 +4,7 @@ const showTerminating = document.getElementById("showTerminating");
 const showStabling = document.getElementById("showStabling");
 const output = document.getElementById("output");
 
-// Automatically load lines from /data/manifest.json
+// 🔹 Load available lines from /data/manifest.json
 async function loadLines() {
   try {
     const manifest = await fetch("data/manifest.json").then(res => res.json());
@@ -24,21 +24,27 @@ async function loadLines() {
 
 loadLines();
 
-// When line is selected
+// 🔹 When line is selected
 lineSelect.addEventListener("change", async (e) => {
   const selectedLine = e.target.value;
-  if (!selectedLine) {
-    stationSelect.disabled = true;
-    stationSelect.innerHTML = "<option>-- Select Station --</option>";
-    output.innerHTML = "";
-    return;
-  }
+
+  // Clear everything when changing lines
+  stationSelect.innerHTML = "<option value=''>-- Select Station --</option>";
+  stationSelect.disabled = true;
+  output.innerHTML = "";
+  delete stationSelect.dataset.lineData;
+
+  // Reset toggles
+  showTerminating.checked = false;
+  showStabling.checked = false;
+
+  if (!selectedLine) return;
 
   try {
+    output.innerHTML = `<p style="color:#1E90FF;">Loading ${capitalize(selectedLine)} line...</p>`;
     const data = await fetch(`data/${selectedLine}.json`).then(res => res.json());
-    stationSelect.disabled = false;
-    stationSelect.innerHTML = "<option>-- Select Station --</option>";
 
+    // Populate stations for selected line
     data.stations.forEach(st => {
       const opt = document.createElement("option");
       opt.value = st.name;
@@ -46,14 +52,20 @@ lineSelect.addEventListener("change", async (e) => {
       stationSelect.appendChild(opt);
     });
 
+    stationSelect.disabled = false;
     stationSelect.dataset.lineData = JSON.stringify(data);
-    output.innerHTML = `<p>Select a station from the ${capitalize(selectedLine)} line.</p>`;
+
+    // Show message and refresh if toggles are on
+    output.innerHTML = `<p>Select a station or use toggles to view ${capitalize(selectedLine)} line info.</p>`;
+    refreshDisplay();
+
   } catch (err) {
-    output.innerHTML = `<p style="color:red;">Failed to load data for ${capitalize(selectedLine)} line.</p>`;
-    console.error(err);
+    console.error("Error loading line:", err);
+    output.innerHTML = `<p style="color:red;">Failed to load data for ${selectedLine} line.</p>`;
   }
 });
 
+// 🔹 When a station is selected
 stationSelect.addEventListener("change", (e) => {
   const data = JSON.parse(stationSelect.dataset.lineData);
   const stationName = e.target.value;
@@ -61,50 +73,94 @@ stationSelect.addEventListener("change", (e) => {
   displayInfo(station, data);
 });
 
+// 🔹 Toggles
 showTerminating.addEventListener("change", refreshDisplay);
 showStabling.addEventListener("change", refreshDisplay);
 
+// 🔹 Refresh display (used for toggles and initial line load)
 function refreshDisplay() {
-  const selectedStation = stationSelect.value;
-  if (!selectedStation) return;
-  const data = JSON.parse(stationSelect.dataset.lineData);
-  const station = data.stations.find(st => st.name === selectedStation);
-  displayInfo(station, data);
+  const lineData = stationSelect.dataset.lineData
+    ? JSON.parse(stationSelect.dataset.lineData)
+    : null;
+
+  const selectedStation = stationSelect.value
+    ? lineData.stations.find(st => st.name === stationSelect.value)
+    : null;
+
+  if (lineData) {
+    displayInfo(selectedStation, lineData);
+  } else {
+    output.classList.remove("visible");
+    output.innerHTML = "";
+  }
 }
 
+// 🔹 Display station info + terminating/stabling lists
 function displayInfo(station, lineData) {
-  let html = `<h3>${station.name}</h3>`;
+  const hasStation = !!station;
+  const showTerm = showTerminating.checked && lineData?.terminating?.length;
+  const showStable = showStabling.checked && lineData?.stabling?.length;
 
-  // ✅ Add operational information (from DOCX)
-  html += `<table class="info-table">
-    <tr><td><strong>Signaller:</strong></td><td>${station.signaller || "—"}</td></tr>
-    <tr><td><strong>Recorded:</strong></td><td>${station.recorded || "—"}</td></tr>
-    <tr><td><strong>Caution Orders:</strong></td><td>${station.caution_orders || "—"}</td></tr>
-    <tr><td><strong>Driver Points:</strong></td><td>${station.driver_points || "—"}</td></tr>
-  </table>`;
-
-  if (station.description) {
-    html += `<p class="desc">${station.description}</p>`;
+  // Hide output if no station and no toggles
+  if (!hasStation && !showTerm && !showStable) {
+    output.classList.remove("visible");
+    output.innerHTML = "";
+    return;
   }
 
-  // ✅ Show Terminating Locations
-  if (showTerminating.checked && lineData.terminating?.length) {
+  let html = "";
+
+  // ✅ Station info section
+  if (station) {
+    const isTerminating = lineData.terminating.some(
+      loc => loc.toLowerCase().includes(station.name.toLowerCase())
+    );
+    const isStabling = lineData.stabling.some(
+      loc => loc.toLowerCase().includes(station.name.toLowerCase())
+    );
+
+    const tick = '<span class="tick">✅</span>';
+    const cross = '<span class="cross">❌</span>';
+
+    html += `<h3>${station.name}</h3>`;
+    html += `<table class="info-table">
+      <tr><td><strong>Signaller:</strong></td><td>${station.signaller || "—"}</td></tr>
+      <tr><td><strong>Recorded:</strong></td><td>${station.recorded || "—"}</td></tr>
+      <tr><td><strong>Caution Orders:</strong></td><td>${station.caution_orders || "—"}</td></tr>
+      <tr><td><strong>Driver Points:</strong></td><td>${station.driver_points || "—"}</td></tr>
+      <tr><td><strong>Terminating Location:</strong></td><td>${isTerminating ? tick : cross}</td></tr>
+      <tr><td><strong>Stabling Location:</strong></td><td>${isStabling ? tick : cross}</td></tr>
+    </table>`;
+
+    if (station.description) {
+      html += `<p class="desc">${station.description}</p>`;
+    }
+  }
+
+  // ✅ Always show terminating/stabling lists when toggled, even if no station selected
+  if (showTerm) {
     html += `<h4>Terminating Locations</h4><ul>`;
     lineData.terminating.forEach(t => html += `<li>${t}</li>`);
     html += `</ul>`;
   }
 
-  // ✅ Show Stabling Locations
-  if (showStabling.checked && lineData.stabling?.length) {
+  if (showStable) {
     html += `<h4>Stabling Locations</h4><ul>`;
     lineData.stabling.forEach(s => html += `<li>${s}</li>`);
     html += `</ul>`;
   }
 
-  output.innerHTML = html;
+  // Show or hide output
+  if (html.trim() !== "") {
+    output.innerHTML = html;
+    output.classList.add("visible");
+  } else {
+    output.innerHTML = "";
+    output.classList.remove("visible");
+  }
 }
 
+// 🔹 Helper function
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-

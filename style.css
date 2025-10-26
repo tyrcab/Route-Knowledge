@@ -1,62 +1,215 @@
-body {
-  font-family: "Segoe UI", sans-serif;
+/* 🔷 RESET & GENERAL LAYOUT */
+* {
+  box-sizing: border-box;
   margin: 0;
-  background-color: #f7f9fc;
+  padding: 0;
+}
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: #f9fafb;
   color: #222;
+  padding-bottom: 70px;
 }
 
+/* HEADER */
 .app-header {
-  background: #1e90ff;
-  color: white;
-  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-top: 15px solid #1E90FF;
+  background-color: #fff;
   text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.logo {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
 }
 
+/* MAIN CONTENT */
 main {
-  padding: 1em;
-  max-width: 600px;
+  padding: 15px;
+  max-width: 650px;
   margin: auto;
 }
-
 label {
+  font-weight: bold;
+  margin-top: 10px;
   display: block;
-  margin-top: 1em;
 }
 
-select, input[type="checkbox"] {
-  margin-top: 0.5em;
+/* DROPDOWNS */
+select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  margin-top: 5px;
+}
+select:focus {
+  border-color: #1E90FF;
+  box-shadow: 0 0 5px rgba(30,144,255,0.4);
+  background-color: #f0f8ff;
 }
 
+/* TOGGLES */
+.toggles {
+  margin-top: 15px;
+  background-color: #ffffff;
+  border-left: 5px solid #1E90FF;
+  border-radius: 8px;
+  padding: 10px 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
 .toggle {
-  margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
 }
+.toggle label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* OUTPUT AREA */
+#output {
+  background-color: #fff;
+  border-left: 5px solid #1E90FF;
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 15px 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  line-height: 1.6em;
+  transition: opacity 0.3s ease;
+}
+#output.loading {
+  opacity: 0.4;
+}
+#output h3 {
+  color: #1E90FF;
+  margin-bottom: 5px;
+}
+#output h4 {
+  margin-top: 15px;
+  color: #000;
+}
+#output ul {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+#output li {
+  margin-bottom: 4px;
+}
+
+/* INFO TABLE */
 .info-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  margin-bottom: 10px;
 }
-
 .info-table td {
   padding: 6px 8px;
   border-bottom: 1px solid #eee;
 }
-
 .info-table tr td:first-child {
   font-weight: bold;
   color: #555;
   width: 40%;
 }
-
 .desc {
-  margin-top: 8px;
+  margin-top: 10px;
   font-style: italic;
   color: #444;
 }
+
+/* FOOTER */
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1E90FF;
+  color: white;
+  text-align: center;
+  padding: 10px 8px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+.app-footer a {
+  color: #ffffff;
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+.app-footer a:hover {
+  color: #e0e0e0;
+}
+
+/* BUTTONS (Optional future additions like Reset) */
+button {
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+button:hover {
+  background-color: #0f70d3;
+  transform: scale(1.03);
+}
+button:active {
+  background-color: #0d5aa8;
+  transform: scale(0.98);
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  main {
+    padding: 10px;
+  }
+  select {
+    font-size: 0.95em;
+  }
+  #output {
+    padding: 12px 15px;
+    font-size: 0.95em;
+  }
+  .toggles {
+    padding: 10px 12px;
+  }
+  .app-footer {
+    font-size: 0.85em;
+    padding: 8px 6px;
+  }
+  /* Hide result box until needed */
 #output {
-  margin-top: 2em;
-  padding: 1em;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: none;
+}
+#output.visible {
+  display: block;
+}
+.tick {
+  color: #2ecc71; /* green */
+  font-size: 1.1em;
+}
+.cross {
+  color: #e74c3c; /* red */
+  font-size: 1.1em;
+}
 }
