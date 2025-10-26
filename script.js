@@ -186,25 +186,48 @@ window.addEventListener("click", (e) => {
   if (e.target === tosModal) tosModal.classList.remove("show");
 });
 
-// 🔹 Auto-set version and date from manifest.json
+// 🔹 Auto-set version and date from manifest.json (works for local + GitHub Pages)
 async function updateVersionInfo() {
   const versionElement = document.getElementById("appVersion");
   if (!versionElement) return;
 
   try {
-    const manifest = await fetch("./manifest.json", { cache: "no-cache" })
-      .then(res => {
-        if (!res.ok) throw new Error("Manifest fetch failed");
-        return res.json();
-      });
+    // Determine correct manifest path
+    let manifestURL = "./manifest.json";
 
+    if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
+      // Local environment (localhost or opening index.html directly)
+      manifestURL = "manifest.json";
+    } else {
+      // GitHub Pages or hosted environment
+      const basePath = window.location.pathname.replace(/index\\.html$/, "");
+      manifestURL = `${basePath}manifest.json`;
+    }
+
+    // Fetch with cache-bypass
+    const response = await fetch(manifestURL, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`Manifest fetch failed: ${response.status}`);
+
+    const manifest = await response.json();
     const version = manifest.version || "v1.0.0";
+
+    // Format date
     const today = new Date();
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    const formattedDate = today.toLocaleDateString("en-AU", options);
+    const formattedDate = today.toLocaleDateString("en-AU", {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    });
+
+    // Smooth fade-in
+    versionElement.style.opacity = 0;
     versionElement.textContent = `Version: ${version} (Updated ${formattedDate})`;
+    setTimeout(() => {
+      versionElement.style.transition = "opacity 0.6s ease";
+      versionElement.style.opacity = 1;
+    }, 100);
   } catch (err) {
-    console.error("Failed to load version info:", err);
+    console.error("❌ Failed to load version info:", err);
     versionElement.textContent = "Version: v1.0.0 (Offline)";
   }
 }
