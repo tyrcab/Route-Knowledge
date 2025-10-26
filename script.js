@@ -186,48 +186,18 @@ window.addEventListener("click", (e) => {
   if (e.target === tosModal) tosModal.classList.remove("show");
 });
 
-// 🔹 Auto-set version and date from manifest.json (works for local + GitHub Pages)
+// 🔹 Auto-update version info from version.json
 async function updateVersionInfo() {
   const versionElement = document.getElementById("appVersion");
   if (!versionElement) return;
 
   try {
-    // Determine correct manifest path
-    let manifestURL = "./manifest.json";
-
-    if (window.location.protocol === "file:" || window.location.hostname === "localhost") {
-      // Local environment (localhost or opening index.html directly)
-      manifestURL = "manifest.json";
-    } else {
-      // GitHub Pages or hosted environment
-      const basePath = window.location.pathname.replace(/index\\.html$/, "");
-      manifestURL = `${basePath}manifest.json`;
-    }
-
-    // Fetch with cache-bypass
-    const response = await fetch(manifestURL, { cache: "no-cache" });
-    if (!response.ok) throw new Error(`Manifest fetch failed: ${response.status}`);
-
-    const manifest = await response.json();
-    const version = manifest.version || "v1.0.0";
-
-    // Format date
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString("en-AU", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
-    });
-
-    // Smooth fade-in
-    versionElement.style.opacity = 0;
-    versionElement.textContent = `Version: ${version} (Updated ${formattedDate})`;
-    setTimeout(() => {
-      versionElement.style.transition = "opacity 0.6s ease";
-      versionElement.style.opacity = 1;
-    }, 100);
+    const res = await fetch("./version.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(`version.json fetch failed: ${res.status}`);
+    const data = await res.json();
+    versionElement.textContent = `Version: ${data.version} (Updated ${data.updated})`;
   } catch (err) {
-    console.error("❌ Failed to load version info:", err);
+    console.error("Failed to load version info:", err);
     versionElement.textContent = "Version: v1.0.0 (Offline)";
   }
 }
