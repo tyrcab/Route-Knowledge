@@ -1,0 +1,41 @@
+name: Auto Bump Version
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  bump:
+    # prevent loops when the bot commits the bump
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create package.json (for ES modules)
+        run: |
+          npm init -y
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.type='module';fs.writeFileSync('package.json', JSON.stringify(p,null,2));console.log('Set type=module in package.json');"
+
+      - name: Run version bump script
+        run: node bump-version.js
+
+      - name: Commit & Push version changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifest.json version.json
+          git commit -m "🔄 Auto bump version [skip ci]" || echo "No changes to commit"
+          git push
