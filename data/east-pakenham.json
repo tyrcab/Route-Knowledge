@@ -1,5 +1,5 @@
 {
-  "line": "Cranbourne",
+  "line": "East Pakenham",
   "terminating": [
     "South Yarra",
     "Hawksburn",
@@ -8,12 +8,19 @@
     "Westall",
     "Springvale",
     "Dandenong",
-    "Cranbourne"
+    "Berwick",
+    "East Pakenham"
   ],
   "stabling": [
     "Westall",
     "Dandenong",
-    "Cranbourne"
+    "Pakenham East"
+  ],
+  "high_beam_range": ["Dandenong", "Pakenham East"],
+  "track_force_protection_zones": [
+    { "range": ["Flinders Street", "Richmond"], "type": "Inner-Suburban" },
+    { "range": ["South Yarra", "Dandenong"], "type": "Suburban" },
+    { "range": ["Dandenong", "Pakenham East"], "type": "Country" }
   ],
   "stations": [
     {
@@ -22,23 +29,21 @@
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
       "driver_points": "No",
-      "description": "Central city terminus for the Cranbourne line."
+      "description": "Central city terminus for the East Pakenham line."
     },
     {
       "name": "Richmond",
       "signaller": "Caulfield Signal Control Panel - Metrol",
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
-      "driver_points": "No",
-      "description": "Major interchange for city loop and eastern lines."
+      "driver_points": "No"
     },
     {
       "name": "South Yarra",
       "signaller": "Sunshine SCC",
       "recorded": "Yes",
       "caution_orders": "APA",
-      "driver_points": "Yes",
-      "description": "Busy inner-suburban interchange connecting to Sandringham line."
+      "driver_points": "Yes"
     },
     {
       "name": "Hawksburn",
@@ -73,8 +78,7 @@
       "signaller": "Sunshine SCC",
       "recorded": "Yes",
       "caution_orders": "APA",
-      "driver_points": "Yes",
-      "description": "Interchange with Frankston and Pakenham lines; terminating location."
+      "driver_points": "Yes"
     },
     {
       "name": "Carnegie",
@@ -102,8 +106,7 @@
       "signaller": "Sunshine SCC",
       "recorded": "Yes",
       "caution_orders": "APA",
-      "driver_points": "Yes",
-      "description": "Suburban station and minor terminating point."
+      "driver_points": "Yes"
     },
     {
       "name": "Huntingdale",
@@ -125,7 +128,6 @@
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
       "driver_points": "No",
-      "description": "Stabling and terminating facilities; depot access.",
       "station_limits": {
         "Down": {
           "from": "WTL724 (Controlled Home Signal)",
@@ -171,7 +173,6 @@
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
       "driver_points": "No",
-      "description": "Major interchange with stabling and terminating facilities.",
       "station_limits": {
         "Down": [
           {
@@ -179,7 +180,8 @@
             "to": "DNG610 (Down Automatic EPH line)"
           },
           {
-            "from": "DNG760 (Down Home CBE line)"
+            "from": "DNG760 (Down Home CBE line)",
+            "to": null
           }
         ],
         "Up": [
@@ -195,36 +197,78 @@
       }
     },
     {
-      "name": "Lynbrook",
+      "name": "Hallam",
       "signaller": "Dandenong SCC – Dandenong Panel",
+      "recorded": "Yes",
+      "caution_orders": "Verbal Authority",
+      "driver_points": "N/A"
+    },
+    {
+      "name": "Narre Warren",
+      "signaller": "Dandenong SCC – Pakenham Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Berwick",
+      "signaller": "Dandenong SCC – Pakenham Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "Yes"
+    },
+    {
+      "name": "Beaconsfield",
+      "signaller": "Dandenong SCC – Pakenham Panel",
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
       "driver_points": "No"
     },
     {
-      "name": "Merinda Park",
-      "signaller": "Dandenong SCC – Dandenong Panel",
+      "name": "Officer",
+      "signaller": "Dandenong SCC – Pakenham Panel",
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
       "driver_points": "No"
     },
     {
-      "name": "Cranbourne",
-      "signaller": "Dandenong SCC – Dandenong Panel",
+      "name": "Cardinia Road",
+      "signaller": "Dandenong SCC – Pakenham Panel",
       "recorded": "Yes",
       "caution_orders": "Transmitted or Handed",
-      "driver_points": "Mainline - No / Yard - Yes (EHPM)",
-      "description": "Terminus of the Cranbourne line; includes yard and stabling facilities.",
+      "driver_points": "No"
+    },
+    {
+      "name": "Pakenham",
+      "signaller": "Dandenong SCC – Pakenham Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No"
+    },
+    {
+      "name": "East Pakenham",
+      "signaller": "Dandenong SCC – Pakenham Panel",
+      "recorded": "Yes",
+      "caution_orders": "Transmitted or Handed",
+      "driver_points": "No",
       "station_limits": {
         "Down": {
-          "from": "CBE742 (Down Controlled Home)",
-          "to": "Buffer at Down end No 2 track / Baulks at Down end No 1 track"
+          "from": "PKM722 (Down Controlled Home)",
+          "to": "PKM780 (North Line) / PKM782 (South Line)"
         },
         "Up": {
-          "from": "Buffer at Down end No 2 track / Baulks at Down end No 1 track",
-          "to": "CBE743 (Up Controlled Home)"
+          "from": "PKM781 (South Line) / PKM779 (North Line)",
+          "to": "PKM719 (Up Home Signal)"
         }
       }
-    }
+    },
+    {
+  "name": "Pakenham East",
+  "signaller": "Dandenong SCC – Pakenham Panel",
+  "recorded": "Yes",
+  "caution_orders": "Transmitted or Handed",
+  "driver_points": "No",
+  "description": "Stabling and maintenance facility east of East Pakenham; depot and siding complex."
+}
   ]
 }

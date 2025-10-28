@@ -95,13 +95,12 @@ function refreshDisplay() {
   }
 }
 
-// 🔹 Display station info + terminating/stabling lists
+// 🔹 Display station info + terminating/stabling lists + station limits
 function displayInfo(station, lineData) {
   const hasStation = !!station;
   const showTerm = showTerminating.checked && lineData?.terminating?.length;
   const showStable = showStabling.checked && lineData?.stabling?.length;
 
-  // Hide output if no station and no toggles
   if (!hasStation && !showTerm && !showStable) {
     output.classList.remove("visible");
     output.innerHTML = "";
@@ -110,14 +109,45 @@ function displayInfo(station, lineData) {
 
   let html = "";
 
-  // ✅ Station info section
   if (station) {
     const isTerminating = lineData.terminating.some(
-      loc => loc.toLowerCase().includes(station.name.toLowerCase())
-    );
+  loc => loc.toLowerCase().trim() === station.name.toLowerCase().trim()
+);
     const isStabling = lineData.stabling.some(
-      loc => loc.toLowerCase().includes(station.name.toLowerCase())
-    );
+  loc => loc.toLowerCase().trim() === station.name.toLowerCase().trim()
+);
+
+
+    const stations = lineData.stations.map(s => s.name);
+    const idx = stations.indexOf(station.name);
+
+    // ✅ High Beam
+    const hbStart = lineData.high_beam_range?.[0];
+    const hbEnd = lineData.high_beam_range?.[1];
+    const inHB =
+      hbStart && hbEnd
+        ? idx >= stations.indexOf(hbStart) && idx <= stations.indexOf(hbEnd)
+        : false;
+
+    // ✅ Track Force Protection (multiple zones)
+    let inTFP = false;
+    let tfpType = "";
+    if (Array.isArray(lineData.track_force_protection_zones)) {
+      for (const zone of lineData.track_force_protection_zones) {
+        const start = zone.range?.[0];
+        const end = zone.range?.[1];
+        if (
+          start &&
+          end &&
+          idx >= stations.indexOf(start) &&
+          idx <= stations.indexOf(end)
+        ) {
+          inTFP = true;
+          tfpType = zone.type;
+          break;
+        }
+      }
+    }
 
     const tick = '<span class="tick">✅</span>';
     const cross = '<span class="cross">❌</span>';
@@ -130,28 +160,57 @@ function displayInfo(station, lineData) {
       <tr><td><strong>Driver Points:</strong></td><td>${station.driver_points || "—"}</td></tr>
       <tr><td><strong>Terminating Location:</strong></td><td>${isTerminating ? tick : cross}</td></tr>
       <tr><td><strong>Stabling Location:</strong></td><td>${isStabling ? tick : cross}</td></tr>
+      <tr><td><strong>High Beam:</strong></td><td>${inHB ? tick : cross}</td></tr>
+      <tr><td><strong>Track Force Protection:</strong></td><td>${
+        inTFP ? tick + " " + tfpType : cross
+      }</td></tr>
     </table>`;
 
     if (station.description) {
       html += `<p class="desc">${station.description}</p>`;
     }
+
+    // ✅ Station Limits
+    const limits = station.station_limits;
+    if (limits) {
+      html += `<div class="station-limits"><h4>Station Limits</h4>`;
+      if (Array.isArray(limits.Down)) {
+        html += `<p><strong>Down:</strong></p><ul>`;
+        limits.Down.forEach(l =>
+          (html += `<li>From: ${l.from} → To: ${l.to || "—"}</li>`)
+        );
+        html += `</ul>`;
+      } else if (limits.Down) {
+        html += `<p><strong>Down:</strong> From ${limits.Down.from} → ${limits.Down.to}</p>`;
+      }
+
+      if (Array.isArray(limits.Up)) {
+        html += `<p><strong>Up:</strong></p><ul>`;
+        limits.Up.forEach(l =>
+          (html += `<li>From: ${l.from} → To: ${l.to || "—"}</li>`)
+        );
+        html += `</ul>`;
+      } else if (limits.Up) {
+        html += `<p><strong>Up:</strong> From ${limits.Up.from} → ${limits.Up.to}</p>`;
+      }
+
+      html += `</div>`;
+    }
   }
 
-  // ✅ Always show terminating/stabling lists when toggled
+  // ✅ Terminating / Stabling lists
   if (showTerm) {
     html += `<h4>Terminating Locations</h4><ul>`;
-    lineData.terminating.forEach(t => html += `<li>${t}</li>`);
+    lineData.terminating.forEach(t => (html += `<li>${t}</li>`));
     html += `</ul>`;
   }
-
   if (showStable) {
     html += `<h4>Stabling Locations</h4><ul>`;
-    lineData.stabling.forEach(s => html += `<li>${s}</li>`);
+    lineData.stabling.forEach(s => (html += `<li>${s}</li>`));
     html += `</ul>`;
   }
 
-  // Show or hide output
-  if (html.trim() !== "") {
+  if (html.trim()) {
     output.innerHTML = html;
     output.classList.add("visible");
   } else {
@@ -159,6 +218,15 @@ function displayInfo(station, lineData) {
     output.classList.remove("visible");
   }
 }
+
+  // ✅ Show or hide output
+  if (html.trim() !== "") {
+    output.innerHTML = html;
+    output.classList.add("visible");
+  } else {
+    output.innerHTML = "";
+    output.classList.remove("visible");
+  }
 
 // 🔹 Helper function
 function capitalize(str) {

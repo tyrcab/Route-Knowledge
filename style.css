@@ -328,3 +328,37 @@ select:focus {
   display: inline-block;
   transition: opacity 0.6s ease;
 }
+/* 🔹 STATION LIMITS SECTION */
+#output .station-limits {
+  margin-top: 15px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+#output .station-limits h4 {
+  color: #1E90FF;
+  margin-bottom: 6px;
+  font-size: 1.05em;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 3px;
+}
+
+#output .station-limits p {
+  margin: 4px 0;
+  color: #333;
+}
+
+#output .station-limits strong {
+  color: #000;
+}
+
+#output .station-limits ul {
+  list-style-type: disc;
+  margin: 5px 0 10px 22px;
+  padding-left: 5px;
+  line-height: 1.4em;
+}
+
+#output .station-limits li {
+  margin-bottom: 3px;
+}
